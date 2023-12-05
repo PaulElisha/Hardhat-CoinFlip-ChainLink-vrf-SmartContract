@@ -1,0 +1,23 @@
+{
+  "name": "coinflip-smartcontract",
+  "version": "1.0.0",
+  "description": "A game of probablity that allows you to predict the coin state and win some eth",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.1",
+    "hardhat": "^2.19.1"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "dotenv": "^16.3.1",
+    "hardhat-deploy": "^0.11.44",
+    "hardhat-deploy-ethers": "^0.4.1",
+    "hardhat-gas-reporter": "^1.0.9"
+  }
+}
