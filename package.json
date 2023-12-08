@@ -14,6 +14,7 @@
     "hardhat": "^2.19.1"
   },
   "dependencies": {
+    "@bisonai/orakl-cli": "^0.6.0",
     "@chainlink/contracts": "^0.8.0",
     "dotenv": "^16.3.1",
     "hardhat-deploy": "^0.11.44",

@@ -3,10 +3,10 @@ pragma solidity 0.8.19;
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
-import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import { VRFConsumerBase } from "@bisonai/orakl-contracts/src/v0.1/VRFConsumerBase.sol";
+import { IVRFCoordinator } from "@bisonai/orakl-contracts/src/v0.1/interfaces/IVRFCoordinator.sol";
 
-contract CoinFlip is VRFConsumerBaseV2 {
+contract CoinFlip is VRFConsumerBase {
 
     enum CoinFlipChoice {
         HEADS,
@@ -29,25 +29,24 @@ contract CoinFlip is VRFConsumerBaseV2 {
 
     uint256 s_entryFees = 0.01 ether;
 
-    VRFCoordinatorV2Interface immutable i_vrfCoordinator;
+    uint256 private sRandomWord;
+    IVRFCoordinator immutable i_vrfCoordinator;
 
     address constant vrfAddress = 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625;
-    uint16 private constant s_blockConfirmations = 3;
     uint64 private immutable s_subscriptionId;
     uint32 private constant s_gasLane = 100000;
     uint32 private constant s_numWords = 1;
     bytes32 private constant s_keyHash =
         0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c;
 
-    constructor(uint64 subscriptionId) VRFConsumerBaseV2
+    constructor(address coordinator) VRFConsumerBase
     (
-        vrfAddress
+        coordinator
     ) {
-        i_vrfCoordinator = VRFCoordinatorV2Interface
+        i_vrfCoordinator = IVRFCoordinator
         (
-            vrfAddress
-        );
-        s_subscriptionId = subscriptionId;
+            coordinator
+        )
     }
 
     function flip(CoinFlipChoice choice) external payable returns(uint256 requestId){
@@ -58,7 +57,6 @@ contract CoinFlip is VRFConsumerBaseV2 {
         requestId = i_vrfCoordinator.requestRandomWords(
             s_keyHash,
             s_subscriptionId,
-            s_blockConfirmations,
             s_gasLane,
             s_numWords
         );
