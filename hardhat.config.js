@@ -3,20 +3,20 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-verify");
 
 /** @type import('hardhat/config').HardhatUserConfig */
-const { SEPOLIA_RPC, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env || ""
+const { KLAYTN_RPC, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env || ""
 
 module.exports = {
   solidity: "0.8.19",
   defaultNetwork: "hardhat",
   networks: {
-    sepolia: {
-      url: SEPOLIA_RPC,
+    klaytn: {
+      url: KLAYTN_RPC || "",
       accounts: [PRIVATE_KEY],
-      chainId: 11155111
+      chainId: 1001
     }
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY
+    apiKey: ETHERSCAN_API_KEY || ""
   },
   sourcify: {
     enabled: true

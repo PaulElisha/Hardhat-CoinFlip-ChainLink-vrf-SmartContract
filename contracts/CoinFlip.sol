@@ -27,30 +27,24 @@ contract CoinFlip is VRFConsumerBase {
 
     mapping (uint256 => CoinFlipStatus) public s_status;
 
-    uint256 s_entryFees = 0.01 ether;
+    uint256 s_entryFees = 1 ether;
 
     uint256 private sRandomWord;
     IVRFCoordinator immutable i_vrfCoordinator;
 
-    address constant vrfAddress = 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625;
-    uint64 private immutable s_subscriptionId;
+    address private vrfAddress;
+    uint64 private s_subscriptionId;
     uint32 private constant s_gasLane = 100000;
     uint32 private constant s_numWords = 1;
     bytes32 private constant s_keyHash =
-        0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c;
+        0xd9af33106d664a53cb9946df5cd81a30695f5b72224ee64e798b278af812779c;
 
-    constructor(address coordinator) VRFConsumerBase
-    (
-        coordinator
-    ) {
-        i_vrfCoordinator = IVRFCoordinator
-        (
-            coordinator
-        )
+    constructor(address coordinator) VRFConsumerBase(coordinator) {
+        i_vrfCoordinator = IVRFCoordinator(coordinator);
     }
 
     function flip(CoinFlipChoice choice) external payable returns(uint256 requestId){
-        if(msg.value != s_entryFees) {
+        if(msg.value < s_entryFees) {
             revert CoinFlip__EntryFeesNotEnough();
         }
 

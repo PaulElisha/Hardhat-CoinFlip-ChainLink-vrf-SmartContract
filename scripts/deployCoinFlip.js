@@ -1,42 +1,45 @@
-const { ethers, run, network } = require("hardhat");
+const { ethers } = require("hardhat");
+const { send } = require("vite");
 
 const deploy = async () => {
 
-    const CoinFlip = await ethers.deployContract("CoinFlip", [7487]);
+    const args = ["0x6B4c0b11bd7fE1E9e9a69297347cFDccA416dF5F"]
+
+    const CoinFlip = await ethers.deployContract("CoinFlip", args);
     console.log("Deploying contract...");
     await CoinFlip.waitForDeployment(6);
     console.log(`Contract Deployed to: ${CoinFlip.target}`)
 
-    const args = [7487]
+    // if (network.config.chainId === 1001 && process.env.KLAYTN_RPC) {
+    //     await CoinFlip.waitForDeployment(6);
+    //     await verify(CoinFlip.target, args)
+    // } else {
+    //     console.log("Contract cannot be verified on Hardhat Network")
+    // }
 
-    if (network.config.chainId === 11155111 && process.env.ETHERSCAN_API_KEY) {
-        await CoinFlip.waitForDeployment(6);
-        await verify(CoinFlip.target, args)
-    } else {
-        console.log("Contract cannot be verified on Hardhat Network")
-    }
-
-    const sendVal = ethers.utils.parseEther("0.1")
+    const sendVal = await ethers.parseEther("1");
     const flip = await CoinFlip.flip(0, { value: sendVal });
     await flip.wait(3);
     console.log(`Flipped!`);
 }
 
-const verify = async (contractAddress, args) => {
-    console.log("Verifying contract....")
-    try {
-        await run("verify:verify", {
-            address: contractAddress,
-            constructorArgs: args
-        })
-    } catch (error) {
-        if (error.message.toLowerCase().includes("already verified")) {
-            console.log("Already verified...!")
-        } else {
-            console.log(error);
-        }
-    }
-}
+// Verifying using hardhat plugin, use Klaytn custom chain config.
+
+// const verify = async (contractAddress, args) => {
+//     console.log("Verifying contract....")
+//     try {
+//         await run("verify:verify", {
+//             address: contractAddress,
+//             constructorArgs: args
+//         })
+//     } catch (error) {
+//         if (error.message.toLowerCase().includes("already verified")) {
+//             console.log("Already verified...!")
+//         } else {
+//             console.log(error);
+//         }
+//     }
+// }
 
 deploy().catch((error) => {
     console.error(error);
