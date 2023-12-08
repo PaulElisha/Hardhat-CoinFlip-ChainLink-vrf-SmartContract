@@ -17,7 +17,7 @@ const deploy = async () => {
     //     console.log("Contract cannot be verified on Hardhat Network")
     // }
 
-    const sendVal = await ethers.parseEther("1");
+    const sendVal = ethers.parseEther("1");
     const flip = await CoinFlip.flip(0, { value: sendVal });
     await flip.wait(3);
     console.log(`Flipped!`);

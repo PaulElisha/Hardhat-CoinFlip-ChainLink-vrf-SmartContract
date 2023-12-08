@@ -27,7 +27,7 @@ contract CoinFlip is VRFConsumerBase {
 
     mapping (uint256 => CoinFlipStatus) public s_status;
 
-    uint256 s_entryFees = 1 ether;
+    uint256 public s_entryFees = 1 ether;
 
     uint256 private sRandomWord;
     IVRFCoordinator immutable i_vrfCoordinator;
@@ -92,5 +92,9 @@ contract CoinFlip is VRFConsumerBase {
 
     function getStatus(uint256 requestId) public view returns(CoinFlipStatus memory) {
         return s_status[requestId];
+    }
+
+    function getBalance() public view returns(uint256) {
+        return address(this).balance;
     }
 }
