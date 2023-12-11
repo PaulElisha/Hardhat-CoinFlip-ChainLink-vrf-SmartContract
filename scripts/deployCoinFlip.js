@@ -1,5 +1,4 @@
-const { ethers } = require("hardhat");
-const { send } = require("vite");
+const { ethers, network, run } = require("hardhat");
 
 const deploy = async () => {
 
@@ -9,6 +8,7 @@ const deploy = async () => {
     console.log("Deploying contract...");
     await CoinFlip.waitForDeployment(6);
     console.log(`Contract Deployed to: ${CoinFlip.target}`)
+    console.log(network.config)
 
     // if (network.config.chainId === 1001 && process.env.KLAYTN_RPC) {
     //     await CoinFlip.waitForDeployment(6);
@@ -23,7 +23,7 @@ const deploy = async () => {
     console.log(`Flipped!`);
 }
 
-// Verifying using hardhat plugin, use Klaytn custom chain config.
+// Use Klaytn custom chain config to verify your contract
 
 // const verify = async (contractAddress, args) => {
 //     console.log("Verifying contract....")
