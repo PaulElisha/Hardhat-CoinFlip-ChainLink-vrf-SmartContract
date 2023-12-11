@@ -1,7 +1,7 @@
 const { assert, expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("CoinFlip", async () => {
+describe("CoinFlip", () => {
   let CoinFlip;
   const val = ethers.parseEther("1");
   const args = "0x6B4c0b11bd7fE1E9e9a69297347cFDccA416dF5F"
